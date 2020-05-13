@@ -1,0 +1,27 @@
+{
+  "name": "project0",
+  "version": "1.0.0",
+  "description": "Express based web service",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "tsc" , 
+    "prestart": "npm run compile",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/bharti3bk/project0.git"
+  },
+  "author": "Fnu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/bharti3bk/project0/issues"
+  },
+  "homepage": "https://gitlab.com/bharti3bk/project0#readme",
+  "dependencies": {
+    "@types/express": "^4.17.6",
+    "express": "^4.17.1",
+    "typescript": "^3.9.2"
+  }
+}
