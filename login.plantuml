@@ -1,0 +1,39 @@
+@startuml Login Flow
+autonumber
+actor client
+title Login Flow
+client -> Router : Post Login request
+note left: api/login
+
+Router -> AuthController :  deserialized http request
+note left: {email: fnubharti@gmail.com, password: asdfaf}
+AuthController -> UserRepository: email
+note left of AuthController #aqua
+    body parser middleware
+    is used to deserialize
+    request and serialize
+    response body
+end note
+note right of AuthController #Pink
+    jsonwebtoken node module is used
+    by auth controller to create jwt.
+    Token will contain inforamtion
+    about user role, name and email.
+end note
+UserRepository -> typeorm: json based query
+note right: SELECT * from User WHERE email = fnubharti@gmail.com
+typeorm -> pg:  transformed SQL query
+note left: {where: {email: fnubharti@gmail.com}}
+database postgres
+pg -> postgres:  SQL query
+pg <- postgres: query result user (raw)
+typeorm <- pg: query result user (raw)
+UserRepository <- typeorm: user entity
+AuthController <- UserRepository : user entity
+note left
+    {
+        accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+    }
+end note
+client <- AuthController : Get JWT Token
+@enduml

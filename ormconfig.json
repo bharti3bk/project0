@@ -1,0 +1,16 @@
+{ 
+    "name": "default",
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "fnubharti",
+    "database": "taskmanager",
+    "entities": ["dist/entity/**/*.js"], 
+    "migrations":["dist/migrations/**/*.js"] , 
+    "synchronize" : true, 
+    "migrationsRun" : true,
+    "cli": {
+        "migrationsDir": "src/migration",
+        "entitiesDir": "src/entity"
+    }
+} 

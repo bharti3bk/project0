@@ -1,0 +1,36 @@
+@startuml Get Task Flow
+autonumber
+actor client
+title Get Task Flow
+client -> Router : Get Task request
+note left: api/task/3
+Router -> TaskController :  deserialized http request
+note left: header auth: jwt
+TaskController -> AuthenticateJwtMiddleware : verify Jwt token and role inside token
+TaskController -> TaskRepository: task id
+note left of TaskController #aqua
+    body parser middleware
+    is used to deserialize
+    request and serialize
+    response body
+end note
+
+TaskRepository -> typeorm: json based query
+note right: SELECT * from Task WHERE id = 3
+typeorm -> pg:  transformed SQL query
+note left: {where: {id: 3}}
+database postgres
+pg -> postgres:  SQL query
+pg <- postgres: query result task (raw)
+typeorm <- pg: query result task (raw)
+TaskRepository <- typeorm: task entity
+TaskController <- TaskRepository : task entity
+note left
+    {
+        id: 3,
+        name: pay phone bill,
+        completed: false
+    }
+end note
+client <- TaskController : Get Task Response
+@enduml
