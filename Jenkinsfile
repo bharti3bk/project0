@@ -5,13 +5,21 @@ pipeline {
       stage('verify branch name') {
          steps {
             echo "$GIT_BRANCH"
-         }
-      } 
+         } 
+      }  
       stage('build'){
        steps {
           sh "pwd"
           sh "docker build -t project0 ."
-       }
+       } 
+       post {
+            success {
+               echo "bulid successful" 
+            } 
+             failure {
+               echo "bulid failed" 
+            }
+         }
       }
    }
 }
