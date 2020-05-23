@@ -10,7 +10,7 @@ pipeline {
       stage('build'){
        steps {
           sh "pwd"
-          sh "docker build -t project0 ."
+          sh "sudo docker build -t project0 ."
        }
       }
    }
