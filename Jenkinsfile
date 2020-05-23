@@ -5,7 +5,7 @@ pipeline {
       stage('verify branch name') {
          steps {
             echo "$GIT_BRANCH" 
-            echo "$BUILD_VERSION"
+            echo "$BUILD_NUMBER"
          } 
       }  
       stage('build'){
