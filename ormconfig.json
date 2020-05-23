@@ -1,9 +1,9 @@
 { 
     "name": "default",
     "type": "postgres",
-    "host": "localhost",
+    "host": "3.134.88.38",
     "port": 5432,
-    "username": "fnubharti",
+    "username": "postgres",
     "database": "taskmanager",
     "entities": ["dist/entity/**/*.js"], 
     "migrations":["dist/migrations/**/*.js"] , 
