@@ -10,9 +10,7 @@ pipeline {
       stage('build'){
        steps {
           sh "pwd"
-          sh "cd project0"
           sh "docker build -t project0 ."
-          sh "cd .."
        }
       }
    }
