@@ -28,7 +28,8 @@ pipeline {
                }
           }
        }
-       post {
+   }
+   post {
             success {
                echo "bulid successful" 
             } 
@@ -36,5 +37,4 @@ pipeline {
                echo "bulid failed" 
             }
          }
-       }
-   }
+}
