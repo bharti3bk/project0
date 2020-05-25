@@ -9,7 +9,7 @@ pipeline {
          } 
       }  
    
-      stage('build'){
+      stage('build') {
        steps {
           sh "pwd"
           sh "docker build -t project0$BUILD_NUMBER ."
@@ -36,5 +36,6 @@ pipeline {
                echo "bulid failed" 
             }
          }
+       }
    }
 }
