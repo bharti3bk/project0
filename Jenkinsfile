@@ -14,7 +14,7 @@ pipeline {
                   sh '''export AWS_REGION=us-east-2
                   export PATH=$PATH:/usr/local/bin
                   aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 676534916920.dkr.ecr.us-east-2.amazonaws.com
-                  docker tag project0:project0$BUILD_NUMBER 676534916920.dkr.ecr.us-east-2.amazonaws.com/project0:project0$BUILD_NUMBER
+                  docker tag project0:project0$BUILD_NUMBER 676534916920.dkr.ecr.us-east-2.amazonaws.com/project0$BUILD_NUMBER
                   docker push 676534916920.dkr.ecr.us-east-2.amazonaws.com/project0:project0$BUILD_NUMBER
                   '''
                }
