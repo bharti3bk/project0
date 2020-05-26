@@ -70,7 +70,7 @@ Resources:
       ServiceName: project0-service 
       Cluster: !Ref Cluster
       TaskDefinition: !Ref TaskDefinition 
-      DesiredCount: 1 
+      DesiredCount: 2
       LaunchType: FARGATE 
       NetworkConfiguration:
         AwsvpcConfiguration:
