@@ -2,12 +2,6 @@ pipeline {
    agent any
 
    stages {
-      stage('Initialization') {
-         steps {
-            cleanWs()
-         } 
-      }  
-   
       stage('build') {
        steps {
           sh "pwd"
