@@ -2,6 +2,8 @@ Parameters:
   SubnetID:
     Description: Subnet id of my vpc
     Type: String
+  ImageID:
+    Type: String
     
 Resources:
   Cluster:
@@ -49,7 +51,7 @@ Resources:
       ExecutionRoleArn: !Ref ExecutionRole 
       ContainerDefinitions: 
         - Name: project0-container
-          Image: 676534916920.dkr.ecr.us-east-2.amazonaws.com/project0:latest
+          Image: !Ref ImageID
           PortMappings: 
             - ContainerPort: 3000 
           LogConfiguration: 
