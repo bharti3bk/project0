@@ -1,0 +1,83 @@
+Parameters:
+  SubnetID:
+    Description: Subnet id of my vpc
+    Type: String
+    
+Resources:
+  Cluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: project0-cluster
+
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      RetentionInDays: 1
+      LogGroupName: project0-log-group
+
+  ExecutionRole: 
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: project0-deployment-role
+      AssumeRolePolicyDocument: 
+        Statement: 
+          - Effect: Allow
+            Principal: 
+              Service: ecs-tasks.amazonaws.com 
+            Action: sts:AssumeRole 
+      ManagedPolicyArns: 
+       - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy 
+
+  ContainerSecurityGroup: 
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: ContainerSecurityGroup
+      GroupDescription: Security group for project0 container
+      SecurityGroupIngress:
+        - IpProtocol: tcp 
+          FromPort: 80 
+          ToPort: 3000
+          CidrIp: 0.0.0.0/0 
+
+  TaskDefinition: 
+    Type: AWS::ECS::TaskDefinition 
+    Properties:
+      Family: deployment-project0-task 
+      Cpu: 256 
+      Memory: 512 
+      NetworkMode: awsvpc 
+      ExecutionRoleArn: !Ref ExecutionRole 
+      ContainerDefinitions: 
+        - Name: project0-container
+          Image: 676534916920.dkr.ecr.us-east-2.amazonaws.com/project0:latest
+          PortMappings: 
+            - ContainerPort: 3000 
+          LogConfiguration: 
+            LogDriver: awslogs 
+            Options: 
+              awslogs-region: !Ref AWS::Region 
+              awslogs-group: !Ref LogGroup 
+              awslogs-stream-prefix: ecs 
+      RequiresCompatibilities:
+        - EC2
+        - FARGATE
+
+  Service:
+    Type: AWS::ECS::Service
+    Properties:
+      ServiceName: project0-service 
+      Cluster: !Ref Cluster
+      TaskDefinition: !Ref TaskDefinition 
+      DesiredCount: 1 
+      LaunchType: FARGATE 
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED 
+          Subnets:
+            - !Ref SubnetID
+          SecurityGroups:
+            - !GetAtt ContainerSecurityGroup.GroupId
+
+
+   
+     
