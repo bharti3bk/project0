@@ -1,6 +1,6 @@
 import { User } from "../entity/User";
 import { UserRepository } from "../repository/UserRepository";
-import { getCustomRepository ,} from "typeorm";
+import { getCustomRepository } from "typeorm";
 import {
   controller,
   httpGet,
@@ -16,12 +16,12 @@ import {
   ApiOperationGet,
   ApiOperationPost,
   ApiOperationDelete,
-  SwaggerDefinitionConstant
+  SwaggerDefinitionConstant,
 } from "swagger-express-ts";
 import * as bcrypt from "bcrypt";
 import { AuthenticateJwt } from "../middleware/AuthenticateJwt";
 import { inject } from "inversify";
-import {logger}  from '../logging/Logging'
+import { logger } from "../logging/Logging";
 @ApiPath({
   path: "/api/users",
   name: "User",
@@ -31,7 +31,6 @@ export class UserController extends BaseHttpController {
   private userRepo: UserRepository;
   private taskRepo: TaskRespository;
   private authJwt: AuthenticateJwt;
-
 
   constructor(@inject(Symbol.for("AuthenticateJwt")) authJwt: AuthenticateJwt) {
     super();
@@ -60,14 +59,13 @@ export class UserController extends BaseHttpController {
   })
   @httpGet("/:id")
   async getUser(@requestParam("id") id: Number): Promise<User> {
-
     let user = await this.userRepo.getUser(id);
     if (user) {
       logger.info("Getting user with id: " + user.id);
       let tasks = await this.taskRepo.getTasksByUserId(user.id);
       user.task = tasks;
-      logger.info("Get User complete")
-      user.password = "****"
+      logger.info("Get User complete");
+      user.password = "****";
       return user;
     }
 
@@ -78,7 +76,15 @@ export class UserController extends BaseHttpController {
     description: "Get all Users",
 
     security: {
-      headers: [{auth: {description:"jwt token", type: SwaggerDefinitionConstant.Response.Type.STRING, required: true}}]
+      headers: [
+        {
+          auth: {
+            description: "jwt token",
+            type: SwaggerDefinitionConstant.Response.Type.STRING,
+            required: true,
+          },
+        },
+      ],
     },
     responses: {
       200: {
@@ -90,8 +96,11 @@ export class UserController extends BaseHttpController {
   })
   @httpGet("/")
   async getAllUsers(): Promise<User[]> {
-    this.authJwt.validateUser(this.httpContext.request.headers['auth']?.toString(), 'admin')
-    logger.info("Getting all users")
+    this.authJwt.validateUser(
+      this.httpContext.request.headers["auth"]?.toString(),
+      "admin"
+    );
+    logger.info("Getting all users");
     let users = await this.userRepo.getUsers();
     logger.info("Get complete for all users");
     return Promise.all(users.map(async (u) => await this.getUser(u.id)));
@@ -116,8 +125,8 @@ export class UserController extends BaseHttpController {
   })
   @httpPost("/")
   async addUser(@requestBody() user: User): Promise<User> {
-    this.authJwt.validateUser(this.httpContext.request.headers['auth']?.toString(), 'admin')
-    const hash = bcrypt.hashSync(user.password, 10)
+    //this.authJwt.validateUser(this.httpContext.request.headers['auth']?.toString(), 'admin')
+    const hash = bcrypt.hashSync(user.password, 10);
     user.password = hash;
     let result = await this.userRepo.addUser(user);
     result.password = "*****";
