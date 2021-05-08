@@ -39,7 +39,7 @@
     "swagger-express-ts2": "^1.0.3",
     "swagger-ui-dist": "^3.25.3",
     "ts-jest": "^26.0.0",
-    "typeorm": "^0.2.24",
+    "typeorm": "^0.2.25",
     "typescript": "^3.9.2",
     "winston": "^3.2.1"
   },
